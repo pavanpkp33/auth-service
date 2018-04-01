@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
 
-    public boolean verifyPassword(String userPwd, String dbPwd){
+    public boolean authenticate(String userPwd, String dbPwd){
         if(userPwd.isEmpty() || dbPwd.isEmpty()) return false;
        return BCrypt.checkpw(userPwd, dbPwd);
     }
@@ -18,4 +18,6 @@ public class AuthService {
 
         return BCrypt.hashpw(userPwd, BCrypt.gensalt());
     }
+
+
 }
