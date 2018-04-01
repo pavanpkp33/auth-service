@@ -46,7 +46,9 @@ public class AuthServiceController {
                  response.setData(Arrays.asList(new String[]{user.getId()}));
                  return response;
              }else{
+
                  res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                 response.setData(null);
                  response.setMessage("Incorrect password");
              }
         }catch(FeignException e){
