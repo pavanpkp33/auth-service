@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 import com.sdsu.edu.cms.authservice.proxy.DataServiceProxy;
 
 import com.sdsu.edu.cms.authservice.service.AuthService;
-import com.sdsu.edu.cms.common.models.response.DataServiceResponse;
+import com.sdsu.edu.cms.common.models.response.ServiceResponse;
 import com.sdsu.edu.cms.common.models.user.AuthUser;
 
 
@@ -28,12 +28,12 @@ public class AuthServiceController {
     @Autowired
     DataServiceProxy dataProxy;
     @Autowired
-    DataServiceResponse response;
+    ServiceResponse response;
     @Autowired
     AuthService authService;
 
     @PostMapping("/auth/login")
-    public DataServiceResponse authenticateUser(@RequestBody AuthUser userCreds, HttpServletResponse res){
+    public ServiceResponse authenticateUser(@RequestBody AuthUser userCreds, HttpServletResponse res){
         String userPwd = userCreds.getPassword();
 
 
@@ -68,7 +68,7 @@ public class AuthServiceController {
     }
 
     @PostMapping("/auth/register")
-    public DataServiceResponse registerUser(@RequestBody User userDetails, HttpServletResponse res){
+    public ServiceResponse registerUser(@RequestBody User userDetails, HttpServletResponse res){
 
         try{
             userDetails.setPassword(authService.hashPwd(userDetails.getPassword()));
@@ -94,7 +94,7 @@ public class AuthServiceController {
     }
 
     @GetMapping("/activate/{id}/token/{token}")
-    public DataServiceResponse activateUser(@PathVariable("id") String id, @PathVariable("token") String token){
+    public ServiceResponse activateUser(@PathVariable("id") String id, @PathVariable("token") String token){
 
         return null;
     }
