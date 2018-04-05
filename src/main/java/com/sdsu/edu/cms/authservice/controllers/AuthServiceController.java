@@ -18,12 +18,14 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(value = "/api/v1", produces = {APPLICATION_JSON_VALUE}, consumes = {APPLICATION_JSON_VALUE})
+@RequestMapping(value = "/api/v1")
 public class AuthServiceController {
 
     @Autowired
@@ -33,7 +35,7 @@ public class AuthServiceController {
     @Autowired
     AuthService authService;
 
-    @PostMapping("/auth/login")
+    @PostMapping(value = "/auth/login", produces = {APPLICATION_JSON_VALUE}, consumes = {APPLICATION_JSON_VALUE})
     public ServiceResponse authenticateUser(@RequestBody AuthUser userCreds, HttpServletResponse res){
         String userPwd = userCreds.getPassword();
 
@@ -81,7 +83,7 @@ public class AuthServiceController {
 
     }
 
-    @PostMapping("/auth/register")
+    @PostMapping(value = "/auth/register", produces = {APPLICATION_JSON_VALUE}, consumes = {APPLICATION_JSON_VALUE})
     public ServiceResponse registerUser(@RequestBody User userDetails, HttpServletResponse res){
 
         try{
@@ -109,9 +111,29 @@ public class AuthServiceController {
     }
 
     @GetMapping("/activate/{id}/token/{token}")
-    public ServiceResponse activateUser(@PathVariable("id") String id, @PathVariable("token") String token){
+    public ServiceResponse activateUser(@PathVariable("id") String id, @PathVariable("token") String token, HttpServletResponse res){
+        Map<String, String> map = new HashMap<>();
+        map.put("id", id);
+        map.put("token", token);
+        ServiceResponse response = dataProxy.activateUser(map);
+        String code = response.getMessage();
+        if(code.equals("1")){
+            res.setStatus(HttpServletResponse.SC_OK);
+            response.setData(Arrays.asList(true));
+            response.setMessage("User account activated successfully.");
 
-        return null;
+        }else if(code.equals("-1")){
+            res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.setData(Arrays.asList(false));
+            response.setMessage("Failed to activate user account");
+
+        }else{
+            res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setData(Arrays.asList(false));
+            response.setMessage("Invalid activation token");
+
+        }
+        return response;
     }
 
 }
