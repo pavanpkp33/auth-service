@@ -1,6 +1,7 @@
 package com.sdsu.edu.cms.authservice.controllers;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.sdsu.edu.cms.authservice.proxy.DataServiceProxy;
 
@@ -36,14 +37,27 @@ public class AuthServiceController {
     public ServiceResponse authenticateUser(@RequestBody AuthUser userCreds, HttpServletResponse res){
         String userPwd = userCreds.getPassword();
 
-
         try {
              response = dataProxy.queryUserName(userCreds.getEmail());
-             AuthUser user = new Gson().fromJson(response.getData().get(0).toString(), AuthUser.class);
+             String resp = response.getData().get(0).toString().trim();
+
+             AuthUser user = new Gson().fromJson(resp, AuthUser.class);
              if(authService.authenticate(userPwd, user.getPassword())){
+
+                 if(!user.getIsActive().equals("Y")){
+                     res.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                     response.setMessage("User not activated. Please activate your account using the activation link sent to your email.");
+                     response.setData(Arrays.asList(false));
+                     return response;
+                 }else if(!user.getIsValid().equals("Y")){
+                     res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                     response.setData(null);
+                     response.setMessage("Account disabled. Please contact support or an administrator");
+                     return response;
+                 }
                  res.setStatus(HttpServletResponse.SC_OK);
                  response.setMessage("User Authenticated");
-                 response.setData(Arrays.asList(new String[]{user.getId()}));
+                 response.setData(Arrays.asList(user.getId()));
                  return response;
              }else{
 
