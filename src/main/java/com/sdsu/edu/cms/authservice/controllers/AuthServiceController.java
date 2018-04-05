@@ -71,7 +71,8 @@ public class AuthServiceController {
     public ServiceResponse registerUser(@RequestBody User userDetails, HttpServletResponse res){
 
         try{
-            userDetails.setPassword(authService.hashPwd(userDetails.getPassword()));
+            String hashedPwd = authService.hashPwd(userDetails.getPassword());
+            userDetails.setPassword(hashedPwd);
             userDetails.setId(UUID.randomUUID().toString());
             response = dataProxy.saveUser(userDetails);
             res.setStatus(HttpServletResponse.SC_CREATED);
