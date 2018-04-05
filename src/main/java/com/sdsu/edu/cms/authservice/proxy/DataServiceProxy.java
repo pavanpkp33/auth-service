@@ -7,10 +7,7 @@ import com.sdsu.edu.cms.common.models.response.ServiceResponse;
 import com.sdsu.edu.cms.common.models.user.User;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -32,5 +29,13 @@ public interface DataServiceProxy {
     @PostMapping(value = "/api/v1/auth/activate", consumes = {APPLICATION_JSON_VALUE})
     @ResponseBody
     ServiceResponse activateUser(@RequestParam Map<String, String> map);
+
+    @PostMapping("/api/v1/users")
+    @ResponseBody
+    ServiceResponse findUserById(@RequestParam Map<String,String> map);
+
+    @PostMapping("/api/v1/users/update")
+    @ResponseBody
+    ServiceResponse updateUser(@RequestBody User user, @RequestParam Map<String, String> map);
 
 }
