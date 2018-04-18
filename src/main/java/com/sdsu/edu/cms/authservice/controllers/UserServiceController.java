@@ -53,7 +53,7 @@ public class UserServiceController {
     @GetMapping("/users/{id}/roles")
     public ServiceResponse getUserRolesById(@PathVariable String id){
 
-        return null;
+        return userService.getUserRoles(id);
 
     }
 

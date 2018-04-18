@@ -38,4 +38,7 @@ public interface DataServiceProxy {
     @ResponseBody
     ServiceResponse updateUser(@RequestBody User user, @RequestParam Map<String, String> map);
 
+    @PostMapping("/api/v1/users/roles")
+    ServiceResponse findRoles(@RequestParam Map<String, String > params);
+
 }

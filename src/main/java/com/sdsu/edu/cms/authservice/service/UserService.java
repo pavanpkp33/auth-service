@@ -9,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -45,5 +48,14 @@ public class UserService {
             }
             throw e;
         }
+    }
+
+    public ServiceResponse getUserRoles(String userId){
+        Map<String, String> mp = new HashMap<>();
+        mp.put("id", userId);
+        ServiceResponse response = dataServiceProxy.findRoles(mp);
+        Object res = response.getData().get(0);
+        return new ServiceResponse(Arrays.asList(res), "User roles queried.");
+
     }
 }
