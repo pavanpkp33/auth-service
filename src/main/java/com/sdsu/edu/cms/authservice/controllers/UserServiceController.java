@@ -59,7 +59,8 @@ public class UserServiceController {
 
     @GetMapping("/users/{id}/conferences")
     public ServiceResponse getUserConferences(@PathVariable String id){
-        return null;
+
+        return userService.getUserConferences(id);
 
     }
 
