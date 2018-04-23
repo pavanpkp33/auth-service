@@ -43,4 +43,10 @@ public interface DataServiceProxy {
 
     @PostMapping("/api/v1/users/conferences")
     ServiceResponse findConferences(@RequestParam Map<String, String> mp);
+
+    @PostMapping("/api/v1/users/email")
+    ServiceResponse findUserByEmail(@RequestParam Map<String, String> params);
+
+    @PostMapping("/api/v1/users/addRole")
+    ServiceResponse addRoleForUser(@RequestParam  Map<String, String> params);
 }

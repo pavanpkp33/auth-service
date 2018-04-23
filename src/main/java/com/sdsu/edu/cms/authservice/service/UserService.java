@@ -76,4 +76,13 @@ public class UserService {
         }
         return new ServiceResponse(finalObj, response.getMessage());
     }
+
+    public ServiceResponse getUserByEmail(Map<String, String> mp) {
+
+        return dataServiceProxy.findUserByEmail(mp);
+    }
+
+    public ServiceResponse addRoles(Map<String, String> params) {
+        return  dataServiceProxy.addRoleForUser(params);
+    }
 }

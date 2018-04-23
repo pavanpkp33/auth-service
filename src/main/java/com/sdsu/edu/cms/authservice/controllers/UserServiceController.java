@@ -8,6 +8,7 @@ import com.sdsu.edu.cms.common.models.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -62,6 +63,20 @@ public class UserServiceController {
 
         return userService.getUserConferences(id);
 
+    }
+
+    @PostMapping("/users/email")
+    public ServiceResponse getUserByEmail(@RequestBody Map<String, String> params){
+        return  userService.getUserByEmail(params);
+    }
+
+    @PostMapping("/users/roles/{cid}/{uid}/{rid}")
+    public ServiceResponse addUserRoles(@PathVariable String cid, @PathVariable String uid, @PathVariable String rid){
+        Map<String, String> params = new HashMap<>();
+        params.put("cid", cid);
+        params.put("uid", uid);
+        params.put("rid", rid);
+        return userService.addRoles(params);
     }
 
 
